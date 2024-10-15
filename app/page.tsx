@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -16,7 +16,7 @@ export default function RatioCalculator() {
   const [error, setError] = useState("")
   const [copied, setCopied] = useState(false)
 
-  const calculateRatios = () => {
+  const calculateRatios = useCallback(() => {
     const profNurseCount = parseInt(professionalNurses)
     const auxNurseCount = parseInt(auxiliaryNurses)
     const patientCount = parseInt(patients)
@@ -50,7 +50,7 @@ export default function RatioCalculator() {
     } else {
       setAuxiliaryRatio("N/A")
     }
-  }
+  }, [professionalNurses, auxiliaryNurses, patients]) // Add dependencies
 
   const copyResults = () => {
     const results = `Professional Nurse-Patient Ratio: ${professionalRatio}\nAuxiliary Nurse-Patient Ratio: ${auxiliaryRatio}`
@@ -62,7 +62,7 @@ export default function RatioCalculator() {
 
   useEffect(() => {
     calculateRatios()
-  }, [])
+  }, [calculateRatios])
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 p-4">
